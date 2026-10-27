@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NOUS — Decluttering Cognitivo per Studenti</title>
+    <!-- Google Fonts & Tailwind CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nous: {
+                            deep: '#0F382C',        // Verde Scuro Primario
+                            deepLight: '#184D3E',   // Verde Accent Dark
+                            cream: '#FDFBF7',       // Sfondo Panna Warm
+                            creamDark: '#F4EFE6',   // Bordi & Card Soft
+                            sage: '#E2EBE5',        // Verde Salvia Soft
+                            sageLight: '#F0F5F2',
+                            coral: '#E55B5B',       // Umore Basso
+                            amber: '#E5A93C',       // Umore Medio
+                            emerald: '#3CB371'      // Umore Alto
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', '-apple-system', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            background-color: #CBD5D0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #0F382C;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Custom Range Slider */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]:focus {
+            outline: none;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 10px;
+            cursor: pointer;
+            background: linear-gradient(90deg, #E55B5B 0%, #E5A93C 50%, #3CB371 100%);
+            border-radius: 999px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            height: 26px;
+            width: 26px;
+            border-radius: 50%;
+            background: #FDFBF7;
+            border: 3.5px solid #0F382C;
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -8px;
+            box-shadow: 0 4px 12px rgba(15, 56, 44, 0.25);
+        }
+
+        .tab-content {
+            animation: fadeIn 0.2s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(3px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .album-binder {
+            background: linear-gradient(135deg, #0F382C 0%, #164E3E 100%);
+            box-shadow: 0 12px 30px rgba(15, 56, 44, 0.25);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-0 sm:p-4">
+
+    <!-- IPHONE MOCKUP FRAME -->
+    <div id="app-frame" class="w-full max-w-[420px] h-screen sm:h-[860px] bg-nous-cream sm:rounded-[44px] shadow-2xl flex flex-col overflow-hidden relative border-0 sm:border-[8px] sm:border-nous-deep/20">
+
+        <!-- ONBOARDING OVERLAY -->
+        <div id="onboarding-layer" class="absolute inset-0 bg-nous-cream z-50 flex flex-col transition-all duration-300">
+
+            <!-- STEP 1: WELCOME SCREEN -->
+            <section id="onboarding-step-1" class="flex-1 p-6 flex flex-col justify-between items-center text-center">
+                <div class="my-auto flex flex-col items-center w-full max-w-xs">
+                    
+                    <!-- FOTO LOGO ORIGINALE -->
+                    <div class="w-28 h-28 mb-4 flex items-center justify-center">
+                        <img src="logo.PNG" alt="NOUS Logo" class="w-full h-full object-contain" onerror="this.src='logo_3.PNG'; this.onerror=function(){this.src='logo_2.PNG';}">
+                    </div>
+
+                    <h1 class="text-2xl font-extrabold text-nous-deep tracking-tight mb-2">
+                        Benvenuto su<br><span class="text-4xl tracking-wider font-extrabold">NOUS</span>
+                    </h1>
+
+                    <p class="text-[11px] font-bold text-nous-deep/70 bg-nous-sage px-3 py-1 rounded-full mb-4 uppercase tracking-wider border border-nous-deep/10">
+                        Il duolingo del benessere mentale per i giovani
+                    </p>
+
+                    <p class="text-xs text-nous-deep/80 font-medium leading-relaxed">
+                        Metti ordine ai tuoi pensieri e impara a vivere meglio, un giorno alla volta.
+                    </p>
+                </div>
+
+                <button onclick="nextOnboardingStep(2)" class="w-full bg-nous-deep text-nous-cream font-bold py-4 px-6 rounded-2xl hover:bg-nous-deepLight transition flex items-center justify-center gap-2 text-sm shadow-md">
+                    <span>Inizia il tuo percorso</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </section>
+
+            <!-- STEP 2: NOTA DI GABRIELE & INPUT NOME -->
+            <section id="onboarding-step-2" class="hidden flex-1 p-6 flex flex-col justify-between overflow-y-auto">
+                <div class="space-y-4 my-auto">
+                    
+                    <div class="bg-white p-5 rounded-3xl border border-nous-deep/10 shadow-xs space-y-3">
+                        <div class="flex items-center gap-3 border-b border-nous-creamDark pb-3">
+                            <div class="w-10 h-10 rounded-2xl bg-nous-deep text-nous-cream flex items-center justify-center font-bold text-lg">
+                                G
+                            </div>
+                            <div>
+                                <h3 class="font-extrabold text-nous-deep text-sm">Gabriele</h3>
+                                <p class="text-[11px] text-nous-deep/60 font-semibold">Fondatore di NOUS • Studente Universitario</p>
+                            </div>
+                        </div>
+
+                        <div class="text-xs text-nous-deep/85 leading-relaxed space-y-2 font-medium">
+                            <p class="font-bold text-sm text-nous-deep">Innanzitutto conosciamoci.</p>
+                            <p>Mi presento, mi chiamo Gabriele e sono uno studente Universitario. Ho ideato questa applicazione per aiutare persone come me a capire meglio se stessi e avere un’organizzazione mentale.</p>
+                            <p>Il benessere mentale è un argomento molto delicato e secondo me molto trascurato in noi giovani. Mi ha sempre segnato fin da piccolo e per questo oggi sono qua per aiutarti.</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label for="user-name-input" class="block text-xs font-bold text-nous-deep uppercase tracking-wider">
+                            Come ti chiami?
+                        </label>
+                        <input type="text" id="user-name-input" placeholder="Inserisci il tuo nome..." 
+                            class="w-full bg-white border-2 border-nous-deep/15 focus:border-nous-deep rounded-2xl px-4 py-3 text-nous-deep font-bold text-sm outline-none transition">
+                        <p id="name-error" class="text-xs text-nous-coral hidden font-bold">Per favore, inserisci il tuo nome per proseguire.</p>
+                    </div>
+                </div>
+
+                <button onclick="submitNameStep()" class="w-full bg-nous-deep text-nous-cream font-bold py-4 px-6 rounded-2xl hover:bg-nous-deepLight transition flex items-center justify-center gap-2 text-sm">
+                    <span>Continua</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </section>
+
+            <!-- STEP 3: CHECK-IN UMORE -->
+            <section id="onboarding-step-3" class="hidden flex-1 p-6 flex flex-col justify-between overflow-y-auto">
+                <div class="space-y-4 my-auto pt-2">
+                    
+                    <div>
+                        <h2 class="text-xl font-extrabold text-nous-deep tracking-tight">
+                            Ciao <span id="display-user-name" class="underline decoration-nous-amber">Studente</span>,<br>come ti senti in questo momento?
+                        </h2>
+                        <p class="text-xs text-nous-deep/60 mt-1">Trascina il punto per indicare il tuo stato d'animo.</p>
+                    </div>
+
+                    <div class="bg-white p-4.5 rounded-3xl border border-nous-deep/10 shadow-xs space-y-3">
+                        <div class="flex justify-between items-center text-xs font-bold text-nous-deep">
+                            <span class="text-nous-coral">Giù 🔴</span>
+                            <span id="slider-score-display" class="text-xs font-extrabold bg-nous-cream px-3 py-1 rounded-full border border-nous-deep/10">30 / 100</span>
+                            <span class="text-nous-emerald">Su 🟢</span>
+                        </div>
+
+                        <input type="range" id="mood-slider" min="0" max="100" value="30" oninput="handleMoodSlider(this.value)">
+
+                        <div class="text-center">
+                            <span id="mood-level-badge" class="text-[11px] font-bold px-3 py-0.5 rounded-full bg-red-100 text-red-800 border border-red-200">
+                                Umore Basso (0-40)
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <div>
+                            <h3 id="tag-instruction-title" class="text-xs font-bold text-nous-deep">
+                                Quali tag pensi che ti stiano influenzando di più oggi?
+                            </h3>
+                            <p class="text-[11px] text-nous-deep/60">Selezionane quanti ne vuoi.</p>
+                        </div>
+
+                        <div id="tags-container" class="space-y-2.5 max-h-[220px] overflow-y-auto pr-1">
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="finishCheckInAndEnterHome()" class="w-full bg-nous-deep text-nous-cream font-bold py-4 px-6 rounded-2xl hover:bg-nous-deepLight transition flex items-center justify-center gap-2 text-sm mt-3">
+                    <span>Salva e continua</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </section>
+
+        </div>
+
+        <!-- HEADER APP -->
+        <header id="main-header" class="bg-nous-cream border-b border-nous-deep/10 px-5 py-3.5 flex items-center justify-between z-20">
+            <div class="flex items-center gap-2.5">
+                <img src="logo.PNG" alt="NOUS Logo" class="w-8 h-8 object-contain" onerror="this.src='logo_3.PNG'; this.onerror=function(){this.src='logo_2.PNG';}">
+                <span class="font-extrabold text-base tracking-wider text-nous-deep">NOUS</span>
+            </div>
+
+            <button onclick="reopenCheckIn()" class="text-[11px] font-bold bg-nous-sage text-nous-deep px-3 py-1.5 rounded-full border border-nous-deep/10 flex items-center gap-1">
+                <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
+                <span>Nuovo Check-in</span>
+            </button>
+        </header>
+
+        <!-- MAIN CONTAINER -->
+        <main id="screen-container" class="flex-1 overflow-y-auto relative">
+
+            <!-- TAB 1: MOOD (HOME) -->
+            <section id="tab-mood" class="p-5 space-y-4 pb-24 tab-content">
+                
+                <div class="bg-nous-sage/50 border border-nous-deep/10 p-4 rounded-2xl">
+                    <p class="text-xs text-nous-deep font-medium leading-relaxed">
+                        Qua ti ho preparato il tuo calendario personalizzato. Un mood tracker che ti aiuterà a capire come cambia il tuo umore nel tempo e da cosa è influenzato.
+                    </p>
+                </div>
+
+                <div class="bg-white p-4.5 rounded-3xl border border-nous-deep/10 shadow-xs space-y-3">
+                    <div class="flex justify-between items-center text-nous-deep font-bold text-xs">
+                        <button onclick="shiftCalendarWeek(-1)" class="p-1 hover:bg-nous-cream rounded-lg"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                        <span id="calendar-month-display" class="font-extrabold text-sm">Aprile 2026</span>
+                        <button onclick="shiftCalendarWeek(1)" class="p-1 hover:bg-nous-cream rounded-lg"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                    </div>
+
+                    <div id="calendar-days-grid" class="grid grid-cols-7 gap-1 text-center">
+                    </div>
+                </div>
+
+                <div id="day-log-card" class="bg-white p-4.5 rounded-3xl border border-nous-deep/10 shadow-xs space-y-3">
+                    <div class="flex justify-between items-center border-b border-nous-creamDark pb-2">
+                        <div>
+                            <h4 id="log-date-display" class="font-bold text-nous-deep text-xs">Mercoledì 9 Aprile</h4>
+                            <span id="log-mood-status" class="text-[11px] font-bold text-nous-coral">Umore Basso (30/100)</span>
+                        </div>
+                        <span id="log-mood-emoji" class="text-2xl">😞</span>
+                    </div>
+
+                    <div class="space-y-1">
+                        <span class="text-[10px] font-bold text-nous-deep/60 uppercase tracking-wider block">Tag scelti oggi:</span>
+                        <div id="log-tags-list" class="flex flex-wrap gap-1.5">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-nous-deep to-nous-deepLight text-nous-cream p-5 rounded-3xl shadow-lg space-y-3">
+                    <div class="flex items-center gap-1.5 text-xs font-bold text-nous-sage">
+                        <i data-lucide="sparkles" class="w-4 h-4"></i>
+                        <span>Il tuo Reset per oggi</span>
+                    </div>
+
+                    <div>
+                        <h3 id="suggested-exercise-title" class="text-base font-extrabold">Grounding Somatico 5-4-3-2-1</h3>
+                        <p id="suggested-exercise-desc" class="text-xs text-nous-cream/80 mt-1 leading-relaxed">
+                            Ancoraggio ai 5 sensi per fermare la ruminazione e interrompere l'iper-arousal.
+                        </p>
+                    </div>
+
+                    <button onclick="openSuggestedExerciseModal()" class="w-full bg-nous-cream text-nous-deep font-bold py-3 px-4 rounded-2xl hover:bg-white transition flex items-center justify-center gap-2 text-xs shadow-xs">
+                        <span>Inizia esercizio</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- TAB 2: MICRO LEZIONI -->
+            <section id="tab-esercizi" class="hidden p-5 space-y-4 pb-24 tab-content">
+                
+                <div class="bg-nous-sage/50 border border-nous-deep/10 p-3.5 rounded-2xl">
+                    <p class="text-xs text-nous-deep/85 leading-relaxed font-medium">
+                        In questo settore di NOUS potrai imparare alcuni esercizi pratici per imparare a capirti e vivere meglio.
+                    </p>
+                </div>
+
+                <div class="flex gap-1.5 text-[11px] font-bold text-nous-deep overflow-x-auto pb-1">
+                    <button onclick="setSphereFilter('all')" id="filter-all" class="px-3 py-1.5 rounded-xl bg-nous-deep text-nous-cream">Per te oggi</button>
+                    <button onclick="setSphereFilter('io')" id="filter-io" class="px-3 py-1.5 rounded-xl bg-white border border-nous-deep/10">🧠 Me stesso</button>
+                    <button onclick="setSphereFilter('altri')" id="filter-altri" class="px-3 py-1.5 rounded-xl bg-white border border-nous-deep/10">🤝 Gli altri</button>
+                    <button onclick="setSphereFilter('mondo')" id="filter-mondo" class="px-3 py-1.5 rounded-xl bg-white border border-nous-deep/10">🌍 Il mondo</button>
+                </div>
+
+                <div id="exercises-list-container" class="space-y-3">
+                </div>
+            </section>
+
+            <!-- TAB 3: MENTAL MAP -->
+            <section id="tab-mentalmap" class="hidden p-5 space-y-4 pb-24 tab-content">
+                
+                <div class="bg-nous-sage/50 border border-nous-deep/10 p-3.5 rounded-2xl">
+                    <p class="text-xs text-nous-deep/85 leading-relaxed font-medium">
+                        Questo è il tuo album NOUS. Clicca sulle carte sbloccate per riaprire l'esercizio ingrandito a tutto schermo.
+                    </p>
+                </div>
+
+                <div class="flex justify-around bg-white p-1 rounded-2xl border border-nous-deep/10 text-xs font-bold text-nous-deep">
+                    <button onclick="renderAlbumPage('io')" id="album-tab-io" class="px-3 py-1.5 rounded-xl bg-nous-deep text-nous-cream">Pagina IO</button>
+                    <button onclick="renderAlbumPage('altri')" id="album-tab-altri" class="px-3 py-1.5 rounded-xl hover:bg-nous-sage">Pagina ALTRI</button>
+                    <button onclick="renderAlbumPage('mondo')" id="album-tab-mondo" class="px-3 py-1.5 rounded-xl hover:bg-nous-sage">Pagina MONDO</button>
+                </div>
+
+                <div class="album-binder rounded-3xl p-4 space-y-3 border-2 border-nous-deep">
+                    <div class="bg-nous-cream p-2.5 rounded-2xl border border-nous-deep/20 flex justify-between items-center">
+                        <h4 id="album-page-title" class="font-extrabold text-xs tracking-wider text-nous-deep">IO</h4>
+                        <span id="album-unlocked-count" class="text-[10px] font-bold bg-nous-deep text-nous-cream px-2 py-0.5 rounded-full">2/3 Carte</span>
+                    </div>
+
+                    <div id="album-cards-grid" class="grid grid-cols-2 gap-3 min-h-[260px]">
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: VIDEO CORSI -->
+            <section id="tab-videocorsi" class="hidden p-5 space-y-4 pb-24 tab-content text-center my-auto">
+                <div class="bg-white p-8 rounded-3xl border border-nous-deep/10 shadow-xs space-y-4 my-8">
+                    <div class="w-16 h-16 bg-nous-sage rounded-2xl flex items-center justify-center text-nous-deep mx-auto">
+                        <i data-lucide="video" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="font-extrabold text-lg text-nous-deep">Video Corsi</h3>
+                    <p class="text-xs text-nous-deep/70 max-w-xs mx-auto leading-relaxed">
+                        Prossimamente - Sezione in arrivo. Stiamo preparando percorsi video pratici.
+                    </p>
+                </div>
+            </section>
+
+            <!-- TAB 5: LONTRA -->
+            <section id="tab-lontra" class="hidden p-5 space-y-4 pb-24 tab-content text-center">
+                <div class="bg-white p-6 rounded-3xl border border-nous-deep/10 shadow-xs space-y-4">
+                    <div class="w-24 h-24 bg-amber-100 rounded-full flex items-center justify-center text-4xl mx-auto shadow-inner">
+                        🦦
+                    </div>
+                    <h3 class="font-extrabold text-lg text-nous-deep">Rifugio Lontra</h3>
+                    <p class="text-xs text-nous-deep/70 max-w-xs mx-auto leading-relaxed">
+                        Prossimamente. La lontra NOUS ti accompagnerà con spunti quotidiani!
+                    </p>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- BOTTOM NAV BAR -->
+        <nav id="bottom-nav" class="bg-white border-t border-nous-deep/10 px-2 py-2 flex justify-around items-center z-30 absolute bottom-0 left-0 right-0">
+            <button onclick="switchTab('mood')" id="nav-mood" class="flex flex-col items-center gap-0.5 text-nous-deep flex-1 py-1">
+                <i data-lucide="smile" class="w-4 h-4"></i>
+                <span class="text-[9px] font-bold">Mood</span>
+            </button>
+            <button onclick="switchTab('esercizi')" id="nav-esercizi" class="flex flex-col items-center gap-0.5 text-nous-deep/40 flex-1 py-1">
+                <i data-lucide="book-open" class="w-4 h-4"></i>
+                <span class="text-[9px] font-bold">Micro lezioni</span>
+            </button>
+            <button onclick="switchTab('mentalmap')" id="nav-mentalmap" class="flex flex-col items-center gap-0.5 text-nous-deep/40 flex-1 py-1">
+                <i data-lucide="layers" class="w-4 h-4"></i>
+                <span class="text-[9px] font-bold">Mental map</span>
+            </button>
+            <button onclick="switchTab('videocorsi')" id="nav-videocorsi" class="flex flex-col items-center gap-0.5 text-nous-deep/40 flex-1 py-1">
+                <i data-lucide="play-circle" class="w-4 h-4"></i>
+                <span class="text-[9px] font-bold">Video corsi</span>
+            </button>
+            <button onclick="switchTab('lontra')" id="nav-lontra" class="flex flex-col items-center gap-0.5 text-nous-deep/40 flex-1 py-1">
+                <span class="text-xs leading-none">🦦</span>
+                <span class="text-[9px] font-bold">Lontra</span>
+            </button>
+        </nav>
+
+        <!-- MODALE ESERCIZIO A SCHERMO INTERO (FULLSCREEN) -->
+        <div id="exercise-modal" class="hidden absolute inset-0 bg-nous-cream z-50 flex flex-col justify-between p-5 overflow-y-auto">
+            
+            <div class="flex justify-between items-center border-b border-nous-creamDark pb-3">
+                <span id="modal-step-indicator" class="text-[10px] font-extrabold uppercase bg-nous-sage px-3 py-1 rounded-full text-nous-deep">
+                    Passo 1 di 4
+                </span>
+                <button onclick="closeExerciseModal()" class="text-nous-deep/70 hover:text-nous-deep p-1">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <div id="modal-screen-content" class="py-6 space-y-4 my-auto">
+            </div>
+
+            <div class="pt-4 border-t border-nous-creamDark flex gap-3">
+                <button id="modal-btn-prev" onclick="navigateModalStep(-1)" class="hidden bg-nous-sage text-nous-deep font-bold py-4 px-5 rounded-2xl text-xs">
+                    Indietro
+                </button>
+                <button id="modal-btn-next" onclick="navigateModalStep(1)" class="flex-1 bg-nous-deep text-nous-cream font-bold py-4 px-5 rounded-2xl hover:bg-nous-deepLight transition flex items-center justify-center gap-2 text-xs">
+                    <span>Avanti</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        const EXERCISES_DATABASE = [
+            {
+                id: 'ex-grounding',
+                sphere: 'io',
+                sphereLabel: '🧠 ME STESSO',
+                title: 'Grounding Somatico 5-4-3-2-1',
+                cardTitle: 'Ancoraggio 5-4-3-2-1',
+                cardTag: 'Ansia',
+                icon: '🧘',
+                targetMood: '0-60',
+                tags: ['Ansia', 'Overthinking', 'Poca Autostima'],
+                screens: [
+                    {
+                        title: "Ti sembra che la mente viaggi troppo veloce?",
+                        subtitle: "Quel momento in cui sei seduto alla scrivania, ma la tua testa è a 200 km/h.",
+                        body: "Stai provando a studiare o a rilassarti, ma un singolo pensiero continua a girare in loop. Il cuore accelera leggermente e la stanza attorno a te sembra svanire sullo sfondo. Non sei tu che non riesci a concentrarti: è la tua mente che è andata in iper-arousal."
+                    },
+                    {
+                        title: "Interrompere il circuito in loop",
+                        subtitle: "La spiegazione neurobiologica",
+                        body: "Quando l'ansia prende il sopravvento, il cervello attiva la risposta di emergenza. Il Grounding Somatico funziona come un interruttore d'emergenza: forza il tuo sistema nervoso a riattivare i 5 sensi fisici, togliendo energia elettrica ai pensieri ansiogeni.",
+                        takeaway: "Non puoi fermare un pensiero con un altro pensiero. Devi usare il corpo."
+                    },
+                    {
+                        title: "Ancorati al presente",
+                        subtitle: "Esegui questi 5 passaggi ora:",
+                        steps: [
+                            "👁️ 5 Cose che vedi: nota 5 dettagli fisici attorno a te.",
+                            "🖐️ 4 Cose che tocchi: senti i piedi a terra o la superficie del tavolo.",
+                            "👂 3 Suoni: ascolta il ronzio del pc o il traffico in lontananza.",
+                            "👃 2 Odori: cerca due profumi nell'aria.",
+                            "👅 1 Respiro: fai un'inspirazione profonda focalizzandoti sul corpo."
+                        ]
+                    },
+                    {
+                        title: "Mente riagganciata a terra",
+                        subtitle: "Esercizio completato con successo",
+                        body: "Quando la testa parte in quarta, i 5 sensi sono il tuo freno a mano d'emergenza.",
+                        actionText: "Completa e Sblocca Carta #01 nell'Album"
+                    }
+                ]
+            },
+            {
+                id: 'ex-defusione',
+                sphere: 'io',
+                sphereLabel: '🧠 ME STESSO',
+                title: 'Defusione Cognitiva (ACT)',
+                cardTitle: 'Defusione Cognitiva',
+                cardTag: 'Overthinking',
+                icon: '🧠',
+                targetMood: '0-60',
+                tags: ['Overthinking', 'Ansia'],
+                screens: [
+                    {
+                        title: '"Non ce la farò mai"',
+                        subtitle: "Quando un pensiero si traveste da verità assoluta.",
+                        body: "A tutti capita di avere in testa una voce sgradevole: 'Boccerò a questo esame', 'Non valgo abbastanza'. Il problema nasce quando 'incolliamo' quel pensiero agli occhi, vedendo il mondo solo attraverso quella lente scura."
+                    },
+                    {
+                        title: "Tu non sei i tuoi pensieri",
+                        subtitle: "La cornice cognitiva",
+                        body: "In psicologia (ACT), credere che ogni pensiero sia una realtà immutabile si chiama Fusione Cognitiva. La Defusione è l'arte di staccare il pensiero dal tuo 'Io', trasformandolo in un semplice evento mentale di passaggio.",
+                        takeaway: "I pensieri sono come le nuvole nel cielo. Tu sei il cielo."
+                    },
+                    {
+                        title: "Cambia la cornice al pensiero",
+                        subtitle: "Fai questo esercizio mentale:",
+                        steps: [
+                            "💭 Prendi il pensiero: 'Non sono all'altezza'.",
+                            "🖼️ Aggiungi la 1° cornice: 'Sto avendo il pensiero che non sono all'altezza'.",
+                            "🔍 Aggiungi la 2° cornice: 'Noto che sto avendo il pensiero che non sono all'altezza'.",
+                            "🌬️ Osserva come la carica di ansia si riduce prendendo distanza."
+                        ]
+                    },
+                    {
+                        title: "Mente defusa",
+                        subtitle: "Esercizio completato con successo",
+                        body: "Un pensiero ha potere su di te solo se dimentichi che è soltanto una frase creata dalla tua testa.",
+                        actionText: "Completa e Sblocca Carta #02 nell'Album"
+                    }
+                ]
+            },
+            {
+                id: 'ex-autoefficacia',
+                sphere: 'io',
+                sphereLabel: '🧠 ME STESSO',
+                title: 'Ancoraggio dell\'Autoefficacia',
+                cardTitle: 'Autoefficacia',
+                cardTag: 'Forza',
+                icon: '⚡',
+                targetMood: '60-100',
+                tags: ['Pace Interiore', 'Sicurezza in Me Stesso'],
+                screens: [
+                    {
+                        title: "Quando le cose vanno bene, ti fermi a notarlo?",
+                        subtitle: "L'abitudine di passare subito al problema successivo.",
+                        body: "Oggi ti senti bene e lucido. Ma spesso tendiamo a dimenticare i momenti di forza non appena si presenta una nuova sfida, dicendo 'È stata solo fortuna'."
+                    },
+                    {
+                        title: "Scalfire la memoria di successo",
+                        subtitle: "Fissare le vittorie",
+                        body: "Il cervello ha un bias di negatività naturale per sopravvivenza. L'Ancoraggio dell'Autoefficacia consiste nel dedicare 90 secondi a registrare una vittoria per attingervi nei giorni no.",
+                        takeaway: "L'autostima si costruisce con le prove concrete."
+                    },
+                    {
+                        title: "Fissa la tua forza",
+                        subtitle: "Istruzioni guidate:",
+                        steps: [
+                            "🎯 Scegli un'azione concreta svolta oggi che ti ha fatto sentire capace.",
+                            "🎬 Rivivi la scena per 10 secondi nella mente.",
+                            "💪 Riconosci la tua qualità personale che l'ha permessa (Tenacia, Focus).",
+                            "📌 Associa una parola chiave a questo momento."
+                        ]
+                    },
+                    {
+                        title: "Forza archiviata in memoria",
+                        subtitle: "Esercizio completato con successo",
+                        body: "I momenti di luce vanno registrati con la stessa cura con cui analizzi i problemi.",
+                        actionText: "Completa e Sblocca Carta #03 nell'Album"
+                    }
+                ]
+            },
+            {
+                id: 'ex-pausa-impatto',
+                sphere: 'altri',
+                sphereLabel: '🤝 GLI ALTRI',
+                title: 'Pausa d\'Impatto (Cool Down)',
+                cardTitle: 'Pausa d\'Impatto',
+                cardTag: 'De-escalation',
+                icon: '🛑',
+                targetMood: '0-60',
+                tags: ['Conflitti', 'Paura del Giudizio'],
+                screens: [
+                    {
+                        title: "Quella voglia di rispondere d'impulso...",
+                        subtitle: "Messaggi fraintesi o discussioni accese.",
+                        body: "Hai appena ricevuto un messaggio stonato o un commento fuori posto. Senti l'ondata di calore salire e le dita che vogliono rispondere subito per difendersi. Fermati un secondo."
+                    },
+                    {
+                        title: "Lo spazio tra stimolo e risposta",
+                        subtitle: "De-escalation guidata",
+                        body: "Tra quello che accade e la tua reazione c'è un piccolo spazio di tempo. La Pausa d'Impatto raffredda l'emozione rapida ed evita che una reazione di 5 secondi rovini una relazione.",
+                        takeaway: "Non devi risolvere ogni tensione nell'esatto momento in cui nasce."
+                    },
+                    {
+                        title: "Attiva il freno relazionale",
+                        subtitle: "Passaggi pratici:",
+                        steps: [
+                            "🛑 Metti in pausa l'azione: posa il telefono.",
+                            "🌬️ 3 Respiri profondi per abbassare il battito.",
+                            "❓ Chiediti: 'Rispondere ora renderà le cose migliori tra 2 ore?'",
+                            "⏳ Concediti 15 minuti di raffreddamento."
+                        ]
+                    },
+                    {
+                        title: "Controllo emotivo mantenuto",
+                        subtitle: "Esercizio completato con successo",
+                        body: "Padroneggiare la pausa significa scegliere come vivere le relazioni invece di subirle.",
+                        actionText: "Completa e Sblocca Carta #04 nell'Album"
+                    }
+                ]
+            },
+            {
+                id: 'ex-cerchio-controllo',
+                sphere: 'altri',
+                sphereLabel: '🤝 GLI ALTRI',
+                title: 'Il Cerchio del Controllo',
+                cardTitle: 'Cerchio Controllo',
+                cardTag: 'Confini',
+                icon: '⭕',
+                targetMood: '0-60',
+                tags: ['Solitudine', 'Paura del Giudizio'],
+                screens: [
+                    {
+                        title: '"Cosa penseranno di me?"',
+                        subtitle: "Il peso delle aspettative e degli umori altrui.",
+                        body: "Passiamo ore a riavvolgere le conversazioni: 'Avrò detto la cosa giusta?', 'Chissà cosa si aspettano da me'. Consumiamo energia provando a gestire quello che c'è nella testa degli altri."
+                    },
+                    {
+                        title: "La mappa dei due cerchi",
+                        subtitle: "Separazione visiva",
+                        body: "Le cose che ci stressano si dividono in ciò che possiamo controllare e ciò che possiamo solo accettare. I giudizi e le opinioni altrui sono nel Cerchio Esterno. L'unica cosa nel tuo Cerchio Interno sono le tue azioni.",
+                        takeaway: "Non puoi controllare il vento, puoi solo regolare le tue vele."
+                    },
+                    {
+                        title: "Fai il de-cluttering della responsabilità",
+                        subtitle: "Fai questo ordine:",
+                        steps: [
+                            "📝 Identifica la preoccupazione relazionale.",
+                            "🚫 Riconosci: 'Non posso controllare l'umore dell'altra persona'.",
+                            "🟢 Chiediti: 'Qual è l'unica cosa che posso fare io adesso?'",
+                            "🌬️ Rilascia il resto fuori dal tuo cerchio."
+                        ]
+                    },
+                    {
+                        title: "Confini definiti",
+                        subtitle: "Esercizio completato con successo",
+                        body: "Smettere di provare a controllare gli altri è il regalo più grande che puoi fare alla tua pace.",
+                        actionText: "Completa e Sblocca Carta #05 nell'Album"
+                    }
+                ]
+            },
+            {
+                id: 'ex-gratitudine-relazionale',
+                sphere: 'altri',
+                sphereLabel: '🤝 GLI ALTRI',
+                title: 'Ancoraggio Relazionale & Gratitudine',
+                cardTitle: 'Gratitudine Relaz.',
+                cardTag: 'Connessione',
+                icon: '💚',
+                targetMood: '60-100',
+                tags: ['Sintonia con gli Altri', 'Affetti'],
+                screens: [
+                    {
+                        title: "Le persone che ci fanno stare bene",
+                        subtitle: "La forza delle connessioni autentiche.",
+                        body: "Oggi ti senti in armonia con le persone attorno a te. Spesso diamo per scontate le interazioni positive, concentrandoci solo su quelle che ci creano attrito."
+                    },
+                    {
+                        title: "La psicologia del legame sicuro",
+                        subtitle: "Nutrire la rete sociale",
+                        body: "La salute mentale si fonda sulla percezione di supporto. L'Ancoraggio Relazionale è una pratica attiva per consolidare nella mente l'evidenza che non sei solo nel tuo percorso.",
+                        takeaway: "Nutrire le connessioni sane riduce la solitudine futura."
+                    },
+                    {
+                        title: "Manda un segnale di connessione",
+                        subtitle: "Passaggi pratici:",
+                        steps: [
+                            "👤 Visualizza la persona di cui apprezzi la presenza.",
+                            "💡 Trova un dettaglio o aiuto recente.",
+                            "📱 Manda un breve messaggio sincero di grazie.",
+                            "🌟 Senti il calore di questa condivisione."
+                        ]
+                    },
+                    {
+                        title: "Connessione rafforzata",
+                        subtitle: "Esercizio completato con successo",
+                        body: "Esprimere gratitudine radica la tua serenità interiore.",
+                        actionText: "Completa e Sblocca Carta #06 nell'Album"
+                    }
+                ]
+            },
+            {
+                id: 'ex-drenaggio-carico',
+                sphere: 'mondo',
+                sphereLabel: '🌍 IL MONDO / SOCIETÀ',
+                title: 'Drenaggio del Carico (1 solo Passo)',
+                cardTitle: 'Drenaggio Carico',
+                cardTag: 'Studio',
+                icon: '🧩',
+                targetMood: '0-60',
+                tags: ['Burnout', 'Paura del Futuro', 'Aspettative della Società'],
+                screens: [
+                    {
+                        title: "Montagne di libri, zero voglia di iniziare",
+                        subtitle: "La trappola della procrastinazione da sovraccarico.",
+                        body: "Vedi il macro-blocco di studio e ti senti paralizzato. Più il compito è grande, più il cervello percepisce minaccia e ti spinge a fare altro. Non sei pigro: sei sopraffatto."
+                    },
+                    {
+                        title: "Sconfiggere l'inerzia di partenza",
+                        subtitle: "Vincere il blocco",
+                        body: "La parte più difficile non è fare il lavoro, ma iniziarlo. Il Drenaggio del Carico riduce l'asticella dell'azione così in basso da rendere impossibile fallire, ingannando la resistenza del cervello.",
+                        takeaway: "Non devi finire tutto oggi. Devi solo muovere il primo centimetro."
+                    },
+                    {
+                        title: "La regola dei 60 secondi",
+                        subtitle: "Azione immediata:",
+                        steps: [
+                            "✂️ Isola una micro-azione ridicola (es. aprire il libro alla pagina 10).",
+                            "⏱️ Prometti a te stesso di lavorare SOLO per 60 secondi.",
+                            "🚀 Compi quel singolo gesto ora.",
+                            "💡 Una volta avviato il motore, continuare sarà facilissimo."
+                        ]
+                    },
+                    {
+                        title: "Inerzia spezzata",
+                        subtitle: "Esercizio completato con successo",
+                        body: "L'azione crea la motivazione, non il contrario.",
+                        actionText: "Completa e Sblocca Carta #07 nell'Album"
+                    }
+                ]
+            },
+            {
+                id: 'ex-triplo-taglio',
+                sphere: 'mondo',
+                sphereLabel: '🌍 IL MONDO / SOCIETÀ',
+                title: 'Regola del Triplo Taglio',
+                cardTitle: 'Triplo Taglio',
+                cardTag: 'Focus',
+                icon: '✂️',
+                targetMood: '0-60',
+                tags: ['Burnout', 'Paura del Futuro'],
+                screens: [
+                    {
+                        title: "10 cose da fare, 0 concentrazione",
+                        subtitle: "Il mito del multitasking e la frammentazione.",
+                        body: "Apri 15 schede sul browser, rispondi alle mail e provi a riassumere un libro. Saltare da un compito all'altro ti dà l'illusione di fare molto, ma ti lascia prostrato."
+                    },
+                    {
+                        title: "Il costo del cambio di contesto",
+                        subtitle: "Focus esclusivo",
+                        body: "Ogni volta che sposti l'attenzione, il cervello paga un costo. La Regola del Triplo Taglio incanala le tue risorse cognitive su una sola coordinata per un tempo circoscritto.",
+                        takeaway: "La produttività è fare una cosa alla volta con chiarezza."
+                    },
+                    {
+                        title: "Applica il Triplo Taglio",
+                        subtitle: "Istruzioni guidate:",
+                        steps: [
+                            "📝 Elenca 3 cose principali da fare.",
+                            "⏸️ Metti in pausa 2 compiti chiudendo las schede.",
+                            "🎯 Lavora solo sull'unica cosa rimasta per 15 minuti.",
+                            "🔕 Metti il telefono a pancia in giù."
+                        ]
+                    },
+                    {
+                        title: "Focus laser ripristinato",
+                        subtitle: "Esercizio completato con successo",
+                        body: "Il focus è l'arte di dire no a 99 cose per farne 1 eccellente.",
+                        actionText: "Completa e Sblocca Carta #08 nell'Album"
+                    }
+                ]
+            },
+            {
+                id: 'ex-shutdown',
+                sphere: 'mondo',
+                sphereLabel: '🌍 IL MONDO / SOCIETÀ',
+                title: 'Rituale di Chiusura con Ancoraggio (Shutdown)',
+                cardTitle: 'Rituale Shutdown',
+                cardTag: 'Chiusura',
+                icon: '🔒',
+                targetMood: '60-100',
+                tags: ['Giornata Produttiva', 'Obiettivi Chiari', 'Traguardo Raggiunto'],
+                screens: [
+                    {
+                        title: "Chiudere i libri, ma non la testa",
+                        subtitle: "L'incapacità di staccare la sera.",
+                        body: "Hai finito di studiare, ma una parte della mente continua a vagare sulle cose da fare domani. Non riesci a goderti il tempo libero senza un retrogusto di ansia."
+                    },
+                    {
+                        title: "Chiudere i processi aperti",
+                        subtitle: "Pace serale",
+                        body: "Se non definisci un punto finale chiaro, il cervello mantiene i compiti in sospeso in background. Il Rituale di Shutdown comunica al sistema nervoso che sei al sicuro nel rilassarti.",
+                        takeaway: "Il riposo non è un premio, è parte della performance."
+                    },
+                    {
+                        title: "Esegui lo Shutdown",
+                        subtitle: "Fasi del rituale:",
+                        steps: [
+                            "📊 Guarda cosa hai fatto oggi e dai valore al progresso.",
+                            "📅 Scrivi le prime 2 priorità di domattina.",
+                            "💻 Chiudi i libri e riordina la scrivania.",
+                            "🗣️ Pronuncia la tua frase: 'Sessione completata'."
+                        ]
+                    },
+                    {
+                        title: "Giornata conclusa con successo",
+                        subtitle: "Esercizio completato con successo",
+                        body: "Un buon riposo stasera garantisce una mente lucida domani.",
+                        actionText: "Completa e Sblocca Carta #09 nell'Album"
+                    }
+                ]
+            }
+        ];
+
+        const TAGS_UMORE_BASSO = [
+            { category: 'Il mondo / Società', icon: '🌐', items: ['Aspettative della Società', 'Burnout', 'Paura del Futuro'] },
+            { category: 'Gli altri', icon: '👥', items: ['Solitudine', 'Conflitti', 'Paura del Giudizio'] },
+            { category: 'Me stesso', icon: '👤', items: ['Overthinking', 'Ansia', 'Poca Autostima'] }
+        ];
+
+        const TAGS_UMORE_ALTO = [
+            { category: 'Il mondo / Società', icon: '🌐', items: ['Traguardo Raggiunto', 'Giornata Produttiva', 'Obiettivi Chiari'] },
+            { category: 'Gli altri', icon: '👥', items: ['Sintonia con gli Altri', 'Affetti'] },
+            { category: 'Me stesso', icon: '👤', items: ['Pace Interiore', 'Sicurezza in Me Stesso'] }
+        ];
+
+        let state = {
+            userName: '',
+            checkInDone: false,
+            moodScore: 30,
+            selectedTags: ['Ansia', 'Overthinking'],
+            unlockedCards: ['ex-grounding', 'ex-defusione'],
+            activeSphereFilter: 'all',
+            activeAlbumPage: 'io',
+            currentModalExercise: null,
+            currentModalStep: 0
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            loadState();
+
+            if (state.checkInDone && state.userName) {
+                document.getElementById('onboarding-layer').classList.add('hidden');
+                initHomeScreen();
+            } else {
+                document.getElementById('onboarding-layer').classList.remove('hidden');
+                nextOnboardingStep(1);
+            }
+        });
+
+        function saveState() {
+            localStorage.setItem('nous_webapp_state_v7', JSON.stringify(state));
+        }
+
+        function loadState() {
+            const saved = localStorage.getItem('nous_webapp_state_v7');
+            if (saved) {
+                try { state = { ...state, ...JSON.parse(saved) }; } catch(e){}
+            }
+        }
+
+        function nextOnboardingStep(step) {
+            document.getElementById('onboarding-step-1').classList.add('hidden');
+            document.getElementById('onboarding-step-2').classList.add('hidden');
+            document.getElementById('onboarding-step-3').classList.add('hidden');
+            document.getElementById(`onboarding-step-${step}`).classList.remove('hidden');
+        }
+
+        function submitNameStep() {
+            const nameVal = document.getElementById('user-name-input').value.trim();
+            if (!nameVal) {
+                document.getElementById('name-error').classList.remove('hidden');
+                return;
+            }
+            document.getElementById('name-error').classList.add('hidden');
+            state.userName = nameVal;
+            document.getElementById('display-user-name').innerText = nameVal;
+            saveState();
+
+            handleMoodSlider(30);
+            nextOnboardingStep(3);
+        }
+
+        function handleMoodSlider(val) {
+            state.moodScore = parseInt(val);
+            document.getElementById('slider-score-display').innerText = `${val} / 100`;
+
+            const badge = document.getElementById('mood-level-badge');
+            const title = document.getElementById('tag-instruction-title');
+
+            if (val <= 40) {
+                badge.innerText = 'Umore Basso (0-40)';
+                badge.className = 'text-[11px] font-bold px-3 py-0.5 rounded-full bg-red-100 text-red-800 border border-red-200';
+            } else if (val <= 60) {
+                badge.innerText = 'Umore Medio (40-60)';
+                badge.className = 'text-[11px] font-bold px-3 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200';
+            } else {
+                badge.innerText = 'Umore Alto (60-100)';
+                badge.className = 'text-[11px] font-bold px-3 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200';
+            }
+
+            if (val <= 60) {
+                title.innerText = 'Quali tag pensi che ti stiano influenzando di più oggi?';
+                renderTagsGrid(TAGS_UMORE_BASSO);
+            } else {
+                title.innerText = 'Quali tag pensi che ti stiano aiutando di più oggi?';
+                renderTagsGrid(TAGS_UMORE_ALTO);
+            }
+        }
+
+        function renderTagsGrid(categories) {
+            const container = document.getElementById('tags-container');
+            container.innerHTML = '';
+
+            categories.forEach(cat => {
+                const box = document.createElement('div');
+                box.className = 'space-y-1';
+                box.innerHTML = `<div class="text-[10px] font-bold text-nous-deep/70 uppercase tracking-wider">${cat.icon} ${cat.category}</div>`;
+
+                const wrap = document.createElement('div');
+                wrap.className = 'flex flex-wrap gap-1.5';
+
+                cat.items.forEach(itemName => {
+                    const isSel = state.selectedTags.includes(itemName);
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.onclick = () => toggleTag(itemName);
+                    btn.className = `text-xs font-semibold px-3 py-1 rounded-xl border transition ${
+                        isSel 
+                        ? 'bg-nous-deep text-nous-cream border-nous-deep shadow-xs' 
+                        : 'bg-white text-nous-deep border-nous-deep/15 hover:border-nous-deep/30'
+                    }`;
+                    btn.innerText = itemName;
+                    wrap.appendChild(btn);
+                });
+
+                box.appendChild(wrap);
+                container.appendChild(box);
+            });
+        }
+
+        function toggleTag(tagName) {
+            if (state.selectedTags.includes(tagName)) {
+                state.selectedTags = state.selectedTags.filter(t => t !== tagName);
+            } else {
+                state.selectedTags.push(tagName);
+            }
+            handleMoodSlider(state.moodScore);
+        }
+
+        function finishCheckInAndEnterHome() {
+            state.checkInDone = true;
+            saveState();
+
+            document.getElementById('onboarding-layer').classList.add('hidden');
+            initHomeScreen();
+        }
+
+        function reopenCheckIn() {
+            document.getElementById('onboarding-layer').classList.remove('hidden');
+            document.getElementById('user-name-input').value = state.userName || '';
+            nextOnboardingStep(3);
+        }
+
+        function initHomeScreen() {
+            renderCalendar();
+            updateMoodLogCard();
+            switchTab('mood');
+        }
+
+        function renderCalendar() {
+            const grid = document.getElementById('calendar-days-grid');
+            grid.innerHTML = '';
+
+            const days = [
+                { d: 'Lun', n: 6, c: 'bg-emerald-500' },
+                { d: 'Mar', n: 7, c: 'bg-emerald-500' },
+                { d: 'Mer', n: 8, c: 'bg-amber-400' },
+                { d: 'Gio', n: 9, sel: true, c: state.moodScore <= 40 ? 'bg-nous-coral' : (state.moodScore <= 60 ? 'bg-amber-400' : 'bg-emerald-500') },
+                { d: 'Ven', n: 10, c: 'bg-emerald-500' },
+                { d: 'Sab', n: 11, c: 'bg-amber-400' },
+                { d: 'Dom', n: 12, c: 'bg-emerald-500' }
+            ];
+
+            days.forEach(day => {
+                const el = document.createElement('div');
+                el.className = `p-1 rounded-xl flex flex-col items-center gap-0.5 cursor-pointer transition ${
+                    day.sel ? 'bg-nous-sage border border-nous-deep/20 font-extrabold shadow-xs' : 'hover:bg-nous-cream'
+                }`;
+                el.innerHTML = `
+                    <span class="text-[9px] text-nous-deep/60">${day.d}</span>
+                    <span class="text-xs text-nous-deep font-bold">${day.n}</span>
+                    <span class="w-1.5 h-1.5 rounded-full ${day.c}"></span>
+                `;
+                grid.appendChild(el);
+            });
+        }
+
+        function updateMoodLogCard() {
+            const tagsList = document.getElementById('log-tags-list');
+            tagsList.innerHTML = '';
+
+            const tags = state.selectedTags.length ? state.selectedTags : ['Ansia', 'Overthinking'];
+            tags.forEach(t => {
+                const b = document.createElement('span');
+                b.className = 'text-[10px] font-semibold bg-nous-sage text-nous-deep px-2 py-0.5 rounded-md border border-nous-deep/10';
+                b.innerText = t;
+                tagsList.appendChild(b);
+            });
+
+            const status = document.getElementById('log-mood-status');
+            const emoji = document.getElementById('log-mood-emoji');
+
+            if (state.moodScore <= 40) {
+                status.innerText = `Umore Basso (${state.moodScore}/100)`;
+                status.className = 'text-[11px] font-bold text-nous-coral';
+                emoji.innerText = '😞';
+            } else if (state.moodScore <= 60) {
+                status.innerText = `Umore Medio (${state.moodScore}/100)`;
+                status.className = 'text-[11px] font-bold text-amber-600';
+                emoji.innerText = '😐';
+            } else {
+                status.innerText = `Umore Alto (${state.moodScore}/100)`;
+                status.className = 'text-[11px] font-bold text-emerald-600';
+                emoji.innerText = '😊';
+            }
+
+            let sug = EXERCISES_DATABASE.find(e => e.tags.some(t => tags.includes(t))) || EXERCISES_DATABASE[0];
+            document.getElementById('suggested-exercise-title').innerText = sug.title;
+            document.getElementById('suggested-exercise-desc').innerText = `${sug.screens[0].subtitle}`;
+            state.currentModalExercise = sug;
+        }
+
+        function shiftCalendarWeek(dir) {
+            document.getElementById('calendar-month-display').innerText = dir > 0 ? 'Maggio 2026' : 'Aprile 2026';
+        }
+
+        function switchTab(tabKey) {
+            ['mood', 'esercizi', 'mentalmap', 'videocorsi', 'lontra'].forEach(k => {
+                const sec = document.getElementById(`tab-${k}`);
+                const nav = document.getElementById(`nav-${k}`);
+                if (sec) sec.classList.add('hidden');
+                if (nav) nav.className = 'flex flex-col items-center gap-0.5 text-nous-deep/40 flex-1 py-1';
+            });
+
+            const targetSec = document.getElementById(`tab-${tabKey}`);
+            const targetNav = document.getElementById(`nav-${tabKey}`);
+            if (targetSec) targetSec.classList.remove('hidden');
+            if (targetNav) targetNav.className = 'flex flex-col items-center gap-0.5 text-nous-deep flex-1 py-1';
+
+            if (tabKey === 'esercizi') {
+                renderExercisesLibrary();
+            } else if (tabKey === 'mentalmap') {
+                renderAlbumPage(state.activeAlbumPage || 'io');
+            }
+        }
+
+        function setSphereFilter(key) {
+            state.activeSphereFilter = key;
+            ['all', 'io', 'altri', 'mondo'].forEach(k => {
+                const btn = document.getElementById(`filter-${k}`);
+                if (btn) btn.className = k === key ? 'px-3 py-1.5 rounded-xl bg-nous-deep text-nous-cream' : 'px-3 py-1.5 rounded-xl bg-white border border-nous-deep/10';
+            });
+            renderExercisesLibrary();
+        }
+
+        function renderExercisesLibrary() {
+            const container = document.getElementById('exercises-list-container');
+            container.innerHTML = '';
+
+            let list = EXERCISES_DATABASE;
+            if (state.activeSphereFilter === 'all') {
+                const userTags = state.selectedTags.length ? state.selectedTags : ['Ansia', 'Overthinking'];
+                list = EXERCISES_DATABASE.filter(e => e.tags.some(t => userTags.includes(t)));
+                if (!list.length) list = EXERCISES_DATABASE.slice(0, 3);
+            } else {
+                list = EXERCISES_DATABASE.filter(e => e.sphere === state.activeSphereFilter);
+            }
+
+            list.forEach(ex => {
+                const isUnl = state.unlockedCards.includes(ex.id);
+                const card = document.createElement('div');
+                card.className = 'bg-white p-4 rounded-3xl border border-nous-deep/10 shadow-xs space-y-2';
+                card.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="text-[10px] font-bold text-nous-deep/60 bg-nous-sage px-2 py-0.5 rounded-md">${ex.sphereLabel}</span>
+                        ${isUnl ? '<span class="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">✓ Carta Sbloccata</span>' : ''}
+                    </div>
+                    <div>
+                        <h4 class="font-extrabold text-nous-deep text-sm">${ex.title}</h4>
+                        <p class="text-xs text-nous-deep/70 mt-0.5">${ex.screens[0].subtitle}</p>
+                    </div>
+                    <button onclick="startExerciseModal('${ex.id}')" class="w-full bg-nous-cream text-nous-deep font-bold py-2.5 px-3 rounded-xl border border-nous-deep/20 hover:bg-nous-sage transition text-xs flex items-center justify-center gap-1.5">
+                        <span>Inizia lezione (4 step)</span>
+                        <i data-lucide="play" class="w-3.5 h-3.5"></i>
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        function renderAlbumPage(sphereKey) {
+            state.activeAlbumPage = sphereKey;
+
+            ['io', 'altri', 'mondo'].forEach(k => {
+                const btn = document.getElementById(`album-tab-${k}`);
+                if (btn) btn.className = k === sphereKey ? 'px-3 py-1.5 rounded-xl bg-nous-deep text-nous-cream' : 'px-3 py-1.5 rounded-xl hover:bg-nous-sage';
+            });
+
+            document.getElementById('album-page-title').innerText = `PAGINA: ${sphereKey.toUpperCase()}`;
+
+            const grid = document.getElementById('album-cards-grid');
+            grid.innerHTML = '';
+
+            const sphereExs = EXERCISES_DATABASE.filter(e => e.sphere === sphereKey);
+            let unlockedInSphere = 0;
+
+            sphereExs.forEach(ex => {
+                const isUnl = state.unlockedCards.includes(ex.id);
+                if (isUnl) unlockedInSphere++;
+
+                const cardEl = document.createElement('div');
+                cardEl.onclick = function() {
+                    if (isUnl) {
+                        startExerciseModal(ex.id);
+                    }
+                };
+                cardEl.className = `p-3.5 rounded-2xl border-2 flex flex-col justify-between text-center relative transition ${
+                    isUnl 
+                    ? 'bg-white border-emerald-500/40 shadow-xs cursor-pointer hover:scale-[1.02]' 
+                    : 'bg-nous-creamDark/60 border-nous-deep/10 opacity-60 cursor-default'
+                }`;
+
+                cardEl.innerHTML = `
+                    ${isUnl ? '<div class="w-4 h-4 bg-emerald-500 text-white rounded-full flex items-center justify-center text-[9px] font-bold absolute top-1.5 right-1.5">✓</div>' : ''}
+                    
+                    <div class="text-3xl my-1.5">${ex.icon}</div>
+
+                    <div class="space-y-0.5">
+                        <h5 class="font-extrabold text-nous-deep text-xs leading-tight">${ex.cardTitle}</h5>
+                        <p class="text-[9px] text-nous-deep/70 leading-tight">${ex.cardTag}</p>
+                    </div>
+
+                    <div class="pt-2 border-t border-nous-creamDark mt-1.5">
+                        <span class="text-[8px] font-bold ${isUnl ? 'text-emerald-700 bg-emerald-50' : 'text-nous-deep/50 bg-nous-cream'} px-2 py-0.5 rounded-full uppercase">
+                            ${isUnl ? 'Sbloccata • Ripassa' : '🔒 Bloccata'}
+                        </span>
+                    </div>
+                `;
+                grid.appendChild(cardEl);
+            });
+
+            document.getElementById('album-unlocked-count').innerText = `${unlockedInSphere}/${sphereExs.length} Carte`;
+        }
+
+        function openSuggestedExerciseModal() {
+            if (state.currentModalExercise) {
+                startExerciseModal(state.currentModalExercise.id);
+            } else {
+                startExerciseModal('ex-grounding');
+            }
+        }
+
+        function startExerciseModal(exId) {
+            const ex = EXERCISES_DATABASE.find(e => e.id === exId);
+            if (!ex) return;
+
+            state.currentModalExercise = ex;
+            state.currentModalStep = 0;
+
+            document.getElementById('exercise-modal').classList.remove('hidden');
+            renderModalStepContent();
+        }
+
+        function navigateModalStep(delta) {
+            state.currentModalStep += delta;
+            if (state.currentModalStep < 0) state.currentModalStep = 0;
+            if (state.currentModalStep > 3) {
+                completeExerciseAndUnlockCard();
+                return;
+            }
+            renderModalStepContent();
+        }
+
+        function renderModalStepContent() {
+            const ex = state.currentModalExercise;
+            const stepIdx = state.currentModalStep;
+            const screen = ex.screens[stepIdx];
+
+            document.getElementById('modal-step-indicator').innerText = `Passo ${stepIdx + 1} di 4 • ${ex.sphereLabel}`;
+
+            const container = document.getElementById('modal-screen-content');
+            container.innerHTML = '';
+
+            let html = `
+                <div>
+                    <h3 class="text-lg font-extrabold text-nous-deep leading-snug">${screen.title}</h3>
+                    <p class="text-xs font-semibold text-nous-deep/60 mt-1">${screen.subtitle}</p>
+                </div>
+            `;
+
+            if (screen.body) {
+                html += `<div class="bg-white p-4 rounded-2xl border border-nous-deep/10 text-xs text-nous-deep/85 leading-relaxed font-medium shadow-xs">${screen.body}</div>`;
+            }
+
+            if (screen.takeaway) {
+                html += `
+                    <div class="bg-nous-sage p-3.5 rounded-2xl border border-nous-deep/10">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-nous-deep/60 block">Key Takeaway</span>
+                        <p class="text-xs font-bold text-nous-deep mt-0.5">"${screen.takeaway}"</p>
+                    </div>
+                `;
+            }
+
+            if (screen.steps) {
+                html += `
+                    <div class="bg-white p-3.5 rounded-2xl border border-nous-deep/10 space-y-2 shadow-xs">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-nous-deep/60 block">Istruzioni pratiche</span>
+                        <ul class="space-y-2 text-xs font-medium text-nous-deep">
+                            ${screen.steps.map(s => `<li class="bg-nous-cream p-2.5 rounded-xl border border-nous-deep/5">${s}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+
+            const prevBtn = document.getElementById('modal-btn-prev');
+            const nextBtn = document.getElementById('modal-btn-next');
+
+            if (stepIdx === 0) {
+                prevBtn.classList.add('hidden');
+            } else {
+                prevBtn.classList.remove('hidden');
+            }
+
+            if (stepIdx === 3) {
+                nextBtn.innerHTML = `<span>${screen.actionText || 'Completa e Sblocca Carta'}</span> <i data-lucide="check" class="w-4 h-4"></i>`;
+                nextBtn.className = 'flex-1 bg-emerald-700 text-white font-bold py-4 px-5 rounded-2xl hover:bg-emerald-800 transition flex items-center justify-center gap-2 text-xs';
+            } else {
+                nextBtn.innerHTML = `<span>Avanti</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+                nextBtn.className = 'flex-1 bg-nous-deep text-nous-cream font-bold py-4 px-5 rounded-2xl hover:bg-nous-deepLight transition flex items-center justify-center gap-2 text-xs';
+            }
+
+            lucide.createIcons();
+        }
+
+        function closeExerciseModal() {
+            document.getElementById('exercise-modal').classList.remove('hidden');
+        }
+
+        function completeExerciseAndUnlockCard() {
+            const ex = state.currentModalExercise;
+            if (ex && !state.unlockedCards.includes(ex.id)) {
+                state.unlockedCards.push(ex.id);
+                saveState();
+            }
+            closeExerciseModal();
+            switchTab('mentalmap');
+            renderAlbumPage(ex ? ex.sphere : 'io');
+        }
+    </script>
+</body>
+</html>
